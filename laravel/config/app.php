@@ -1,7 +1,9 @@
 <?php
 
 return [
-
+    'login' => env('APP_LOGIN', FALSE),
+    'mi_energia' => env('APP_MI_ENERGIA', FALSE),
+    'ohm_v2' => env('APP_OHM_V2', TRUE),
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -12,7 +14,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => env('APP_NAME', 'SOLAR-CRUP'),
+    'name' => env('APP_NAME', 'SOLAR-CRUD'),
 
     /*
     |--------------------------------------------------------------------------
@@ -235,7 +237,4 @@ return [
         'Html'      => Collective\Html\HtmlFacade::class,
         'Flash'     => Laracasts\Flash\Flash::class,
     ],
-    'login' => env('APP_LOGIN', FALSE),
-    'mi_energia' => env('APP_MI_ENERGIA', FALSE),
-    'ohm_v2' => env('APP_OHM_V2', TRUE),
 ];
