@@ -1,11 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Config;
+use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
-
+use DB;
 class HomeController extends Controller
 {
+        protected $connection = 'ohm_v2'; 
     /**
      * Create a new controller instance.
      *
@@ -13,7 +15,9 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+
+        if(Config::get('app.login'))
+            $this->middleware('auth');
     }
 
     /**
@@ -26,3 +30,4 @@ class HomeController extends Controller
         return view('home');
     }
 }
+

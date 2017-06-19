@@ -1,26 +1,152 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>{{Config::get('app.name')}}</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.3.11/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.3.11/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/skins/square/_all.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('js/plugins/dataTables/dataTables.bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('js/plugins/datepicker/datepicker3.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="{{ asset('css/master.css') }}">
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @yield('css')
+    <style>
+        .table-bordered thead tr{
+            background-color: #a1a194;
+            color: white;
+            font-weight: 600;
+        }
+        .skin-blue .main-header .logo,.skin-blue .main-header .navbar,.skin-blue .sidebar-form input[type="text"], .skin-blue .sidebar-form .btn{
+            background-color: #464646 !important;
+        }
+        .skin-blue .wrapper, .skin-blue .main-sidebar, .skin-blue .left-side{
+            background-color: #A1A194 !important;
+        }
+        .skin-blue .sidebar-menu>li:hover>a, .skin-blue .sidebar-menu>li.active>a{
+            background-color: #5B605F !important;
+            border-left-color: #A90641 !important;
+            border-left: 1px solid transparent;
+        }
+        .skin-blue .sidebar-menu>li>a{
+            border-bottom: 1px solid rgba(0,0,0,0.1) !important;
+        }
+        .skin-blue .sidebar-form input[type="text"]:focus, .skin-blue .sidebar-form input[type="text"]:focus+.input-group-btn .btn {
+            background-color: #666b68;
+            color: #fff;
+        }
+        .skin-blue .treeview-menu>li>a{
+            color: white;
+        }
+        .fa-circle-o:before {
+            color: #a90641;
+            content: "\f10c";
+        }
+        .skin-blue .sidebar-menu>li.header{
+                background: #919185;
+                color: white;
+                font-size: 1.2em;
+        }
+        .btn-app-red {
+            background-color: #a90641;
+            border-color: #5a0725;
+            color: white;
+        }
+        .btn-app-red:hover{
+            background-color: #a90641;
+            color: white; 
+            font-size: 1.2 rem;
+        }
+        .fa-app{color:#464646;}
+        .skin-blue .sidebar-menu>li>.treeview-menu {
+            background: rgba(91, 96, 95, 0.84);
+        }
+        .bg-app {
+            background-color: #A90641 !important;
+        }
+        .skin-blue .main-header .navbar .sidebar-toggle:hover{
+            background-color: #5B605F !important;
+        }
+        .skin-blue .sidebar a {
+            color: #b8c7ce;
+            color: white;
+            font-family: sans-serif;
+        }
+        .sidebar-menu>li .label, .sidebar-menu>li .badge {
+            margin-right: -4px;
+        }
+        footer a{
+            color: #A90641 !important;
+        }
+        table.table-bordered tbody th, table.table-bordered tbody td {
+            border-left-width: 1; 
+            border-bottom-width: 1;
+        }
+        .table-bordered>thead>tr>th, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>tbody>tr>td, .table-bordered>tfoot>tr>td {
+            border: 1px solid #ddd;
+        }
+    </style>
 </head>
-<body>
-    <div id="app">
+
+<body class="skin-blue sidebar-mini">
+@if(Config::get('app.login'))
+    @if (!Auth::guest())
+        <div class="wrapper">
+            <!-- Main Header -->
+            <header class="main-header">
+
+                <!-- Logo -->
+                <a href="{!! url('/') !!}" class="logo">
+                    <b>{{Config::get('app.name')}}</b>
+                </a>
+
+                <!-- Header Navbar -->
+                <nav class="navbar navbar-static-top" role="navigation">
+                    <!-- Sidebar toggle button-->
+                    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                        <span class="sr-only">Toggle navigation</span>
+                    </a>
+                    <!-- Navbar Right Menu -->
+                    <div class="navbar-custom-menu">
+                        <a href="{!! url('/logout') !!}" class="btn btn-sign-out btn-flat"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="fa fa-sign-out" aria-hidden="true"></i> Salir
+                        </a>
+                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                            {{ csrf_field() }}
+                        </form>
+                    </div>
+                </nav>
+            </header>
+
+            <!-- Left side column. contains the logo and sidebar -->
+            @include('layouts.sidebar')
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+                @yield('content')
+            </div>
+
+            <!-- Main Footer -->
+            <footer class="main-footer" style="max-height: 100px;text-align: center">
+                <strong>Copyright © 2016-2017 <a href="#">carlos anselmi</a>.</strong> All rights reserved.
+            </footer>
+
+        </div>
+    @else
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
 
                     <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#app-navbar-collapse">
                         <span class="sr-only">Toggle Navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -28,53 +154,85 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                    <a class="navbar-brand" href="{!! url('/') !!}">
+                        {{Config::get('app.name')}}
                     </a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        &nbsp;
+                        <li><a href="{!! url('/home') !!}">Home</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
-                        @if (Auth::guest())
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
-                        @else
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endif
+                        <li><a href="{!! url('/login') !!}">Login</a></li>
+                        <li><a href="{!! url('/register') !!}">Register</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
 
-        @yield('content')
-    </div>
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        @include('adminlte-templates::common.errors')
+                        @yield('content')
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+@else
+        <div class="wrapper">
+            <!-- Main Header -->
+            <header class="main-header">
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+                <!-- Logo -->
+                <a href="#" class="logo">
+                    <b>{{Config::get('app.name')}}</b>
+                </a>
+
+                <!-- Header Navbar -->
+                <nav class="navbar navbar-static-top" role="navigation">
+                    <!-- Sidebar toggle button-->
+                    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                        <span class="sr-only">Toggle navigation</span>
+                    </a>
+                    <!-- Navbar Right Menu -->
+                </nav>
+            </header>
+
+            <!-- Left side column. contains the logo and sidebar -->
+            @include('layouts.sidebar')
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+                @yield('content')
+            </div>
+
+            <!-- Main Footer -->
+            <footer class="main-footer" style="max-height: 100px;text-align: center">
+                <strong>Copyright © 2016-2017 <a href="#">carlos anselmi</a>.</strong> All rights reserved.
+            </footer>
+
+        </div>
+@endif
+    <!-- jQuery 3.1.1 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/icheck.min.js"></script>
+    <script type="text/javascript" src="{{ asset('js/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
+    <!-- AdminLTE App -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.3.11/js/app.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
+    <script type="text/javascript" src="{{ asset('js/AppScript.js') }}"></script>
+    @yield('scripts')
 </body>
 </html>

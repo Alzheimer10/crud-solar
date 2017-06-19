@@ -11,10 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+if(!Config::get('app.login')){
+	require base_path('/routes/routes.php');
+}else{
+	Auth::routes();
+	Route::group(['middleware' => 'auth'], function()
+	{
+		require base_path('/routes/routes.php');
+	});
+}
